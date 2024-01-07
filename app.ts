@@ -1,13 +1,16 @@
-import experss from 'express';
+import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';
 
-const app = experss();
+const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+const indexRouter = express.Router();
 
-app.get('/', async (req, res) => {
+app.use(cors());
+app.use('/', indexRouter);
+
+indexRouter.get('/', async (req, res) => {
   console.log('hello flyio');
   const response = await (
     await fetch('https://yts.mx/api/v2/list_movies.json')
@@ -15,7 +18,7 @@ app.get('/', async (req, res) => {
   return res.json({ movies: response.data.movies });
 });
 
-app.get('/hello', (req, res) => {
+indexRouter.get('/hello', (req, res) => {
   return res.json({ message: 'Hello Fly.io Server !!!' });
 });
 
